@@ -1,0 +1,2060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuantumTrade Pro | Live AI Trading Platform</title>
+    <meta name="description" content="Experience real-time AI trading with our Windows platform. Live market simulation, advanced analytics, and quantum-powered algorithms.">
+    
+    <!-- Preload resources -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" as="font" crossorigin>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #6d28d9;
+            --primary-dark: #5b21b6;
+            --primary-darker: #4c1d95;
+            --secondary: #06b6d4;
+            --secondary-dark: #0891b2;
+            --dark: #1e293b;
+            --darker: #0f172a;
+            --darkest: #020617;
+            --light: #f8fafc;
+            --lighter: #f1f5f9;
+            --gray: #94a3b8;
+            --dark-gray: #475569;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            
+            --rounded-sm: 0.25rem;
+            --rounded: 0.5rem;
+            --rounded-md: 0.75rem;
+            --rounded-lg: 1rem;
+            --rounded-xl: 1.5rem;
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            --gradient-dark: linear-gradient(135deg, var(--darker) 0%, var(--darkest) 100%);
+            --gradient-accent: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--dark);
+            background-color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            background-color: rgba(255, 255, 255, 0.85);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: var(--transition-slow);
+        }
+        
+        header.scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 0;
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--darker);
+            text-decoration: none;
+            z-index: 1001;
+        }
+        
+        .logo-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: var(--rounded);
+            background: var(--gradient-primary);
+            color: white;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-dark);
+        }
+        
+        .nav-cta {
+            display: flex;
+            gap: 1rem;
+            z-index: 1001;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.75rem;
+            border-radius: var(--rounded);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.95rem;
+            gap: 0.75rem;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .btn:hover::before {
+            opacity: 1;
+        }
+        
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 4px 15px -3px rgba(109, 40, 217, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(109, 40, 217, 0.4);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(109, 40, 217, 0.05);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-secondary {
+            background: var(--gradient-accent);
+            color: white;
+            box-shadow: 0 4px 15px -3px rgba(6, 182, 212, 0.4);
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(6, 182, 212, 0.4);
+        }
+        
+        .btn-dark {
+            background: var(--gradient-dark);
+            color: white;
+        }
+        
+        .btn-dark:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .btn-lg {
+            padding: 1.25rem 2.5rem;
+            font-size: 1.1rem;
+            border-radius: var(--rounded-md);
+        }
+        
+        .btn-xl {
+            padding: 1.5rem 3rem;
+            font-size: 1.25rem;
+            border-radius: var(--rounded-md);
+        }
+        
+        /* Hero */
+        .hero {
+            padding: 12rem 0 8rem;
+            background: linear-gradient(135deg, #f9fafb 0%, #f0f4f8 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(109, 40, 217, 0.08) 0%, rgba(109, 40, 217, 0) 70%);
+            z-index: 0;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background-color: white;
+            color: var(--primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .badge i {
+            font-size: 1rem;
+        }
+        
+        h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: var(--darker);
+            letter-spacing: -0.025em;
+        }
+        
+        .hero p {
+            font-size: 1.35rem;
+            color: var(--dark-gray);
+            margin-bottom: 2.5rem;
+            max-width: 700px;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            background-color: white;
+            padding: 2rem 3rem;
+            border-radius: var(--rounded-xl);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .stat-item {
+            text-align: center;
+            position: relative;
+        }
+        
+        .stat-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -1rem;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 2rem;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-number {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--darker);
+            margin-bottom: 0.25rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+        
+        /* Live Trading Section */
+        .live-trading {
+            padding: 8rem 0;
+            background-color: white;
+            position: relative;
+        }
+        
+        .live-trading-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .live-trading-demo {
+            position: relative;
+            border-radius: var(--rounded-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: var(--transition);
+            height: 500px;
+            background: var(--darker);
+        }
+        
+        .live-trading-demo:hover {
+            transform: perspective(1000px) rotateY(0deg);
+        }
+        
+        .demo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .demo-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .demo-title i {
+            color: var(--secondary);
+        }
+        
+        .demo-controls {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .demo-control {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .demo-control.red {
+            background-color: #ef4444;
+        }
+        
+        .demo-control.yellow {
+            background-color: #f59e0b;
+        }
+        
+        .demo-control.green {
+            background-color: #10b981;
+        }
+        
+        .demo-content {
+            height: calc(100% - 50px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .chart-container {
+            width: 100%;
+            height: 60%;
+            background: var(--darkest);
+            position: relative;
+        }
+        
+        .chart-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, var(--darkest) 0%, rgba(30, 41, 59, 0.5) 50%, var(--darkest) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite linear;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        .chart-candles {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            padding: 1rem;
+        }
+        
+        .candle {
+            flex: 1;
+            position: relative;
+            margin: 0 1px;
+        }
+        
+        .candle-body {
+            width: 60%;
+            margin: 0 auto;
+            background: var(--secondary);
+            position: relative;
+            border-radius: 2px;
+        }
+        
+        .candle-wick {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        .trading-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--rounded-sm);
+            padding: 0.75rem;
+            text-align: center;
+        }
+        
+        .stat-card-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.25rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .stat-card-label {
+            font-size: 0.75rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .trading-activity {
+            height: 40%;
+            overflow-y: auto;
+            background: var(--darker);
+            padding: 1rem;
+        }
+        
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+        }
+        
+        .activity-time {
+            color: var(--gray);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .activity-action {
+            color: white;
+        }
+        
+        .activity-profit {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+        
+        .profit-up {
+            color: #10b981;
+        }
+        
+        .profit-down {
+            color: #ef4444;
+        }
+        
+        .live-trading-content h2 {
+            margin-bottom: 1.5rem;
+        }
+        
+        .live-trading-content p {
+            color: var(--dark-gray);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .live-features {
+            display: flex;
+            flex-direction: column;
+            gap: 1.75rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .live-feature {
+            display: flex;
+            gap: 1.25rem;
+        }
+        
+        .live-feature-icon {
+            flex-shrink: 0;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(109, 40, 217, 0.1) 0%, rgba(109, 40, 217, 0.05) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        
+        .live-feature-content h4 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--darker);
+        }
+        
+        .live-feature-content p {
+            margin-bottom: 0;
+            color: var(--dark-gray);
+            font-size: 1rem;
+        }
+        
+        /* Features */
+        .features {
+            padding: 8rem 0;
+            background-color: #f8fafc;
+            position: relative;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+        
+        h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--darker);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.025em;
+        }
+        
+        .section-subtitle {
+            font-size: 1.35rem;
+            color: var(--dark-gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+        
+        .feature-card {
+            background-color: var(--lighter);
+            border-radius: var(--rounded-xl);
+            padding: 2.5rem;
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(109, 40, 217, 0.03) 0%, rgba(109, 40, 217, 0) 100%);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(109, 40, 217, 0.2);
+        }
+        
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+        
+        .feature-icon {
+            width: 4rem;
+            height: 4rem;
+            border-radius: var(--rounded);
+            background: linear-gradient(135deg, rgba(109, 40, 217, 0.1) 0%, rgba(109, 40, 217, 0.05) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            font-size: 1.75rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--darker);
+        }
+        
+        .feature-card p {
+            color: var(--dark-gray);
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.95rem;
+            position: relative;
+        }
+        
+        .feature-link i {
+            transition: var(--transition);
+        }
+        
+        .feature-link:hover i {
+            transform: translateX(3px);
+        }
+        
+        /* Download */
+        .download {
+            padding: 8rem 0;
+            background-color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .download-box {
+            background: var(--gradient-dark);
+            border-radius: var(--rounded-xl);
+            padding: 5rem;
+            color: white;
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1;
+        }
+        
+        .download-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            z-index: -1;
+        }
+        
+        .download-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .download-box h2 {
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+        
+        .download-box p {
+            font-size: 1.25rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .download-meta {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .meta-item i {
+            font-size: 1rem;
+        }
+        
+        .system-requirements {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: var(--rounded-lg);
+            padding: 2.5rem;
+            margin-top: 3rem;
+            text-align: left;
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .system-requirements h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--darker);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .system-requirements h3 i {
+            color: var(--primary);
+        }
+        
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.75rem;
+        }
+        
+        .requirement-item h4 {
+            font-size: 0.95rem;
+            color: var(--dark-gray);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+        
+        .requirement-item p {
+            font-weight: 600;
+            margin-bottom: 0;
+            color: var(--dark);
+            font-size: 1.05rem;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            padding: 8rem 0;
+            background-color: #f8fafc;
+            position: relative;
+        }
+        
+        .testimonials::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2IiBoZWlnaHQ9IjYiPgo8cmVjdCB3aWR0aD0iNiIgaGVpZ2h0PSI2IiBmaWxsPSIjZjhmYWZjIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDBMNiA2IiBzdHJva2U9IiNlNWU1ZTUiIHN0cm9rZS13aWR0aD0iMSI+PC9wYXRoPgo8cGF0aCBkPSJNNiAwTDAgNiIgc3Ryb2tlPSIjZTVlNWU1IiBzdHJva2Utd2lkdGg9IjEiPjwvcGF0aD4KPC9zdmc+');
+            opacity: 0.5;
+            z-index: 0;
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .testimonial-card {
+            background-color: white;
+            border-radius: var(--rounded-xl);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 6rem;
+            color: rgba(0, 0, 0, 0.03);
+            font-family: serif;
+            line-height: 1;
+            z-index: 0;
+        }
+        
+        .testimonial-content {
+            margin-bottom: 2rem;
+            font-style: italic;
+            color: var(--dark-gray);
+            position: relative;
+            z-index: 1;
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+        
+        .author-avatar {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+            font-size: 1.25rem;
+        }
+        
+        .author-info h4 {
+            font-size: 1.15rem;
+            margin-bottom: 0.25rem;
+            color: var(--darker);
+        }
+        
+        .author-info p {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        /* FAQ */
+        .faq {
+            padding: 8rem 0;
+            background-color: white;
+        }
+        
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 2rem 0;
+        }
+        
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 700;
+            color: var(--darker);
+            font-size: 1.25rem;
+        }
+        
+        .faq-question:hover {
+            color: var(--primary);
+        }
+        
+        .faq-answer {
+            padding-top: 1.5rem;
+            color: var(--dark-gray);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), padding-top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 1000px;
+            padding-top: 1.5rem;
+        }
+        
+        .faq-toggle {
+            transition: transform 0.3s;
+            color: var(--primary);
+        }
+        
+        .faq-item.active .faq-toggle {
+            transform: rotate(180deg);
+        }
+        
+        /* CTA */
+        .cta {
+            padding: 8rem 0;
+            background: var(--gradient-dark);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(109, 40, 217, 0.15) 0%, rgba(109, 40, 217, 0) 70%);
+            z-index: 0;
+        }
+        
+        .cta-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .cta h2 {
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--darkest);
+            color: white;
+            padding: 6rem 0 3rem;
+            position: relative;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 4rem;
+            margin-bottom: 4rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .footer-about {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-logo-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: var(--rounded);
+            background: var(--gradient-primary);
+            color: white;
+        }
+        
+        .footer-about p {
+            opacity: 0.7;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+        }
+        
+        .social-link {
+            width: 2.75rem;
+            height: 2.75rem;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: var(--transition);
+        }
+        
+        .social-link:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .footer-column h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1.75rem;
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 2.5rem;
+            height: 2px;
+            background: var(--gradient-primary);
+        }
+        
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .footer-links a i {
+            opacity: 0;
+            transition: var(--transition);
+            font-size: 0.8rem;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            padding-left: 0.25rem;
+        }
+        
+        .footer-links a:hover i {
+            opacity: 1;
+        }
+        
+        .footer-newsletter p {
+            opacity: 0.7;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .newsletter-input {
+            flex: 1;
+            padding: 0.875rem 1.25rem;
+            border-radius: var(--rounded-sm);
+            border: none;
+            font-family: inherit;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: var(--transition);
+        }
+        
+        .newsletter-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .newsletter-input:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 3rem;
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.6;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            h1 {
+                font-size: 3.5rem;
+            }
+            
+            h2 {
+                font-size: 2.5rem;
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            .live-trading-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            
+            .live-trading-demo {
+                order: -1;
+                transform: none;
+            }
+            
+            .live-trading-content h2 {
+                text-align: center;
+            }
+            
+            .live-trading-content p {
+                text-align: center;
+            }
+            
+            .download-box {
+                padding: 3rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.75rem;
+            }
+            
+            h2 {
+                font-size: 2.25rem;
+            }
+            
+            .hero {
+                padding: 10rem 0 6rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .hero-stats {
+                flex-direction: column;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+            
+            .download-box {
+                padding: 2rem;
+            }
+            
+            .download-meta {
+                flex-direction: column;
+                gap: 0.75rem;
+                align-items: center;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2.25rem;
+            }
+            
+            h2 {
+                font-size: 1.75rem;
+            }
+            
+            .hero p, .section-subtitle {
+                font-size: 1.15rem;
+            }
+            
+            .btn-lg {
+                padding: 1rem 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .feature-card {
+                padding: 1.75rem;
+            }
+            
+            .testimonial-card {
+                padding: 1.75rem;
+            }
+            
+            .faq-question {
+                font-size: 1.1rem;
+            }
+            
+            .live-trading-demo {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <span>QuantumTrade</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#live-trading">Live Demo</a></li>
+                    <li><a href="#download">Download</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                </ul>
+                <div class="nav-cta">
+                    <a href="#" class="btn btn-outline">Login</a>
+                    <a href="#download" class="btn btn-primary">Download</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="badge">
+                    <i class="fas fa-bolt"></i>
+                    <span>Version 4.2.1 Released</span>
+                </div>
+                <h1>Live AI Trading on Your Desktop</h1>
+                <p>QuantumTrade Pro combines real-time market simulation with quantum-powered algorithms for unprecedented trading performance on Windows.</p>
+                <div class="hero-buttons">
+                    <a href="#download" class="btn btn-primary btn-lg">
+                        <i class="fas fa-download"></i> Download for Windows
+                    </a>
+                    <a href="#live-trading" class="btn btn-outline btn-lg">
+                        <i class="fas fa-play"></i> View Live Demo
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">31.5%</div>
+                        <div class="stat-label">Avg. Monthly ROI</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">9ms</div>
+                        <div class="stat-label">Avg. Execution</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">99.1%</div>
+                        <div class="stat-label">Uptime</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">23K+</div>
+                        <div class="stat-label">Active Traders</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Trading Demo -->
+    <section class="live-trading" id="live-trading">
+        <div class="container">
+            <div class="live-trading-container">
+                <div class="live-trading-content">
+                    <h2>Real-Time Trading Simulation</h2>
+                    <p>Experience our AI trading platform in action with this live simulation. Watch as our quantum algorithms analyze market conditions and execute trades in real-time.</p>
+                    
+                    <div class="live-features">
+                        <div class="live-feature">
+                            <div class="live-feature-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="live-feature-content">
+                                <h4>Live Market Analysis</h4>
+                                <p>Our algorithms process real-time market data to identify profitable opportunities across multiple timeframes.</p>
+                            </div>
+                        </div>
+                        <div class="live-feature">
+                            <div class="live-feature-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="live-feature-content">
+                                <h4>AI Decision Making</h4>
+                                <p>Watch as our neural networks evaluate risk/reward ratios and make trading decisions autonomously.</p>
+                            </div>
+                        </div>
+                        <div class="live-feature">
+                            <div class="live-feature-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="live-feature-content">
+                                <h4>Ultra-Fast Execution</h4>
+                                <p>See trades executed in milliseconds with our optimized order routing system.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="#download" class="btn btn-primary btn-lg">
+                        <i class="fas fa-download"></i> Get Started Now
+                    </a>
+                </div>
+                
+                <div class="live-trading-demo">
+                    <div class="demo-header">
+                        <div class="demo-title">
+                            <i class="fas fa-chart-line"></i>
+                            <span>QuantumTrade Pro - Live Simulation</span>
+                        </div>
+                        <div class="demo-controls">
+                            <div class="demo-control red"></div>
+                            <div class="demo-control yellow"></div>
+                            <div class="demo-control green"></div>
+                        </div>
+                    </div>
+                    <div class="demo-content">
+                        <div class="chart-container">
+                            <div class="chart-placeholder"></div>
+                            <div class="chart-candles">
+                                <!-- Candles will be generated by JavaScript -->
+                            </div>
+                        </div>
+                        <div class="trading-stats">
+                            <div class="stat-card">
+                                <div class="stat-card-value">$42,156.78</div>
+                                <div class="stat-card-label">Portfolio Value</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-card-value">+12.4%</div>
+                                <div class="stat-card-label">Today's P/L</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-card-value">27</div>
+                                <div class="stat-card-label">Active Trades</div>
+                            </div>
+                        </div>
+                        <div class="trading-activity">
+                            <!-- Activity items will be generated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Advanced Trading Technology</h2>
+                <p class="section-subtitle">QuantumTrade Pro combines cutting-edge AI with institutional-grade trading tools.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-atom"></i>
+                    </div>
+                    <h3>Quantum Neural Network</h3>
+                    <p>Our proprietary QNN architecture processes market data through quantum-inspired algorithms for superior pattern recognition.</p>
+                    <a href="#" class="feature-link">
+                        Learn more
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chess"></i>
+                    </div>
+                    <h3>Multi-Agent Systems</h3>
+                    <p>Competitive AI agents specialize in different market conditions, collaborating to optimize your trading performance.</p>
+                    <a href="#" class="feature-link">
+                        Learn more
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <h3>Deep Liquidity Analysis</h3>
+                    <p>Real-time order book reconstruction and liquidity forecasting across 28 major exchanges for optimal execution.</p>
+                    <a href="#" class="feature-link">
+                        Learn more
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-virus"></i>
+                    </div>
+                    <h3>Adaptive Risk Control</h3>
+                    <p>Dynamic position sizing and volatility-adjusted stop-loss algorithms that protect your capital.</p>
+                    <a href="#" class="feature-link">
+                        Learn more
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <h3>Cross-Exchange Arbitrage</h3>
+                    <p>Simultaneous monitoring of price discrepancies across 28 supported exchanges with automated execution.</p>
+                    <a href="#" class="feature-link">
+                        Learn more
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Advanced Strategy Builder</h3>
+                    <p>Visual programming interface with 200+ technical indicators and machine learning blocks for custom strategy development.</p>
+                    <a href="#" class="feature-link">
+                        Learn more
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download -->
+    <section class="download" id="download">
+        <div class="container">
+            <div class="download-box">
+                <div class="download-content">
+                    <h2>Download QuantumTrade Pro for Windows</h2>
+                    <p>Experience the future of algorithmic trading today. Our Windows client delivers unparalleled performance with low system requirements.</p>
+                    <div class="download-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-download"></i>
+                            <span>v4.2.1 (324 MB)</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Released: July 22, 2023</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Digitally Signed</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-windows"></i>
+                            <span>Windows 10/11 64-bit</span>
+                        </div>
+                    </div>
+                    <a href="https://usworke.itsm-us1.comodo.com/download/win/communication_client/9.4/em_Wk8Omxzz_installer.msi" class="btn btn-secondary btn-xl">
+                        <i class="fas fa-download"></i> Download Now
+                    </a>
+                    <div class="system-requirements">
+                        <h3><i class="fas fa-laptop"></i> System Requirements</h3>
+                        <div class="requirements-grid">
+                            <div class="requirement-item">
+                                <h4>Operating System</h4>
+                                <p>Windows 10/11 (64-bit only)</p>
+                            </div>
+                            <div class="requirement-item">
+                                <h4>Processor</h4>
+                                <p>Intel i7 or AMD Ryzen 5</p>
+                            </div>
+                            <div class="requirement-item">
+                                <h4>Memory</h4>
+                                <p>16GB RAM recommended</p>
+                            </div>
+                            <div class="requirement-item">
+                                <h4>Graphics</h4>
+                                <p>NVIDIA GTX 1060 or equivalent</p>
+                            </div>
+                            <div class="requirement-item">
+                                <h4>Storage</h4>
+                                <p>2GB SSD space</p>
+                            </div>
+                            <div class="requirement-item">
+                                <h4>Internet</h4>
+                                <p>50Mbps stable connection</p>
+                            </div>
+                            <div class="requirement-item">
+                                <h4>.NET Version</h4>
+                                <p>.NET 6.0 or later</p>
+                            </div>
+                            <div class="requirement-item">
+                                <h4>Display</h4>
+                                <p>1920×1080 minimum</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>Trusted by Professional Traders</h2>
+                <p class="section-subtitle">Hear from our community of quantitative analysts, hedge fund managers, and retail traders.</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"QuantumTrade Pro has transformed our trading operations. The quantum optimization algorithms consistently outperform our in-house models, particularly in high-volatility environments. The cross-exchange arbitrage module alone has increased our profitability by 28%."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">JH</div>
+                        <div class="author-info">
+                            <h4>James Henderson</h4>
+                            <p>Quantitative Portfolio Manager</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"As a solo trader, I can't compete with institutional resources. QuantumTrade Pro levels the playing field. The multi-agent system adapts to changing market conditions better than any bot I've used in my 7 years of algorithmic trading."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SR</div>
+                        <div class="author-info">
+                            <h4>Sophia Rodriguez</h4>
+                            <p>Professional Crypto Trader</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"The deep liquidity analysis provides execution quality I previously only saw with $50,000/month institutional platforms. I've reduced my slippage costs by 63% since switching to QuantumTrade Pro."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MK</div>
+                        <div class="author-info">
+                            <h4>Michael Kwon</h4>
+                            <p>High-Frequency Trading Specialist</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2>Frequently Asked Questions</h2>
+                <p class="section-subtitle">Find answers to common questions about QuantumTrade Pro.</p>
+            </div>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How does the live trading simulation work?</span>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our live trading simulation uses real market data with a 15-minute delay to demonstrate how QuantumTrade Pro would perform under actual market conditions. The demo shows our AI analyzing price movements, making trading decisions, and executing simulated trades with realistic slippage and fees. While not real money, it accurately represents our platform's capabilities.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What exchanges and markets does QuantumTrade Pro support?</span>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>QuantumTrade Pro currently supports 28 major cryptocurrency exchanges including Binance, Coinbase Pro, Kraken, Bitfinex, and Deribit. For traditional markets, we integrate with 12 major brokers offering forex, commodities, and indices. The platform also supports CME Group futures through our institutional partners. We're continuously expanding our exchange coverage based on liquidity and user demand.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How does the adaptive risk management system work?</span>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our risk system employs multiple layers of protection: 1) Real-time volatility measurement adjusts position sizes dynamically, 2) Correlation matrices identify concentrated exposures across your portfolio, 3) Market regime detection switches between conservative and aggressive strategies, and 4) Circuit breakers automatically pause trading during extreme events. You maintain full control over risk parameters while benefiting from our institutional-grade safeguards.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What kind of hardware do I need for optimal performance?</span>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>For basic operation, QuantumTrade Pro runs well on any modern Windows PC meeting the minimum requirements. For high-frequency trading or complex strategies, we recommend: Intel i7/i9 or AMD Ryzen 7/9 processor, 32GB RAM, NVIDIA RTX 3060+ GPU, and NVMe SSD storage. The software automatically scales its computational load based on available hardware. Our colocated server option provides institutional-grade infrastructure for demanding users.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I backtest my strategies with historical data?</span>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, QuantumTrade Pro includes our QuantumBacktest engine with: 1) 7+ years of tick-level historical data for all supported markets, 2) Realistic spread and slippage modeling, 3) Monte Carlo simulation for robustness testing, and 4) Walk-forward optimization. Our backtesting environment accounts for exchange-specific nuances like fee schedules and order book dynamics to provide accurate performance estimates.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Experience Quantum Trading?</h2>
+                <p>Join the revolution in algorithmic trading. Download QuantumTrade Pro today and start trading with institutional technology.</p>
+                <a href="#download" class="btn btn-primary btn-xl">
+                    <i class="fas fa-download"></i> Download for Windows
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <a href="#" class="footer-logo">
+                        <div class="footer-logo-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <span>QuantumTrade</span>
+                    </a>
+                    <p>Quantum-powered trading intelligence for the modern investor. Institutional technology democratized.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Product</h3>
+                    <ul class="footer-links">
+                        <li><a href="#features">Features <i class="fas fa-arrow-right"></i></a></li>
+                        <li><a href="#live-trading">Live Demo <i class="fas fa-arrow-right"></i></a></li>
+                        <li><a href="#download">Download <i class="fas fa-arrow-right"></i></a></li>
+                        <li><a href="#">Pricing <i class="fas fa-arrow-right"></i></a></li>
+                        <li><a href="#">Roadmap <i class="fas fa-arrow-right"></i></a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Documentation <i class="fas fa-arrow-right"></i></a></li>
+                        <li><a href="#">API Reference <i class="fas fa-arrow-right"></i></a></li>
+                        <li><a href="#">Trading Academy <i class="fas fa-arrow-right"></i></a></li>
+                        <li><a href="#">Market Research <i class="fas fa-arrow-right"></i></a></li>
+                        <li><a href="#">Whitepapers <i class="fas fa-arrow-right"></i></a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us <i class="fas fa-arrow-right"></i></a></li>
+                        <li><a href="#">Careers <i class="fas fa-arrow-right"></i></a></li>
+                        <li><a href="#">Press <i class="fas fa-arrow-right"></i></a></li>
+                        <li><a href="#">Legal <i class="fas fa-arrow-right"></i></a></li>
+                        <li><a href="#">Contact <i class="fas fa-arrow-right"></i></a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to receive quantum trading insights, platform updates, and market analysis.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email" class="newsletter-input" required>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                    <small>We respect your privacy. Unsubscribe at any time.</small>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 QuantumTrade Technologies. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="#">Risk Disclosure</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ Toggle
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                item.classList.toggle('active');
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                if (this.getAttribute('href') === '#') return;
+                
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Update URL without jumping
+                    if (history.pushState) {
+                        history.pushState(null, null, targetId);
+                    } else {
+                        location.hash = targetId;
+                    }
+                }
+            });
+        });
+        
+        // Sticky header
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Animation on scroll
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.feature-card, .live-trading-demo, .testimonial-card');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.2;
+                
+                if (elementPosition < screenPosition) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        };
+        
+        // Set initial state for animated elements
+        document.querySelectorAll('.feature-card, .live-trading-demo, .testimonial-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        });
+        
+        // Run once on load
+        animateOnScroll();
+        
+        // Then on scroll
+        window.addEventListener('scroll', animateOnScroll);
+        
+        // Live trading simulation
+        function generateRandomCandles(count) {
+            const candles = [];
+            let lastClose = 50000 + Math.random() * 5000;
+            
+            for (let i = 0; i < count; i++) {
+                const open = lastClose;
+                const close = open + (Math.random() - 0.5) * open * 0.02;
+                const high = Math.max(open, close) + Math.random() * open * 0.01;
+                const low = Math.min(open, close) - Math.random() * open * 0.01;
+                
+                candles.push({ open, high, low, close });
+                lastClose = close;
+            }
+            
+            return candles;
+        }
+        
+        function renderCandles(candles, container) {
+            container.innerHTML = '';
+            
+            // Find min and max for scaling
+            let min = Infinity;
+            let max = -Infinity;
+            
+            candles.forEach(candle => {
+                min = Math.min(min, candle.low);
+                max = Math.max(max, candle.high);
+            });
+            
+            const range = max - min;
+            const height = container.clientHeight;
+            
+            candles.forEach(candle => {
+                const candleEl = document.createElement('div');
+                candleEl.className = 'candle';
+                
+                // Calculate positions
+                const bodyTop = height - ((candle.close - min) / range * height);
+                const bodyBottom = height - ((candle.open - min) / range * height);
+                const bodyHeight = Math.abs(bodyBottom - bodyTop);
+                
+                const wickTop = height - ((candle.high - min) / range * height);
+                const wickBottom = height - ((candle.low - min) / range * height);
+                
+                // Create candle body
+                const body = document.createElement('div');
+                body.className = 'candle-body';
+                body.style.height = `${bodyHeight}px`;
+                body.style.bottom = `${Math.min(bodyTop, bodyBottom)}px`;
+                body.style.backgroundColor = candle.close >= candle.open ? '#10b981' : '#ef4444';
+                
+                // Create wick
+                const wick = document.createElement('div');
+                wick.className = 'candle-wick';
+                wick.style.height = `${wickBottom - wickTop}px`;
+                wick.style.bottom = `${wickTop}px`;
+                
+                candleEl.appendChild(wick);
+                candleEl.appendChild(body);
+                container.appendChild(candleEl);
+            });
+        }
+        
+        function generateRandomActivity(count) {
+            const actions = ['BUY', 'SELL', 'STOP LOSS', 'TAKE PROFIT'];
+            const symbols = ['BTC/USDT', 'ETH/USDT', 'SOL/USDT', 'ADA/USDT'];
+            const activities = [];
+            
+            for (let i = 0; i < count; i++) {
+                const now = new Date();
+                const time = new Date(now.getTime() - Math.random() * 86400000);
+                const hours = time.getHours().toString().padStart(2, '0');
+                const minutes = time.getMinutes().toString().padStart(2, '0');
+                const seconds = time.getSeconds().toString().padStart(2, '0');
+                
+                const action = actions[Math.floor(Math.random() * actions.length)];
+                const symbol = symbols[Math.floor(Math.random() * symbols.length)];
+                const profit = (Math.random() - 0.3) * 1000;
+                
+                activities.push({
+                    time: `${hours}:${minutes}:${seconds}`,
+                    action: `${action} ${symbol}`,
+                    profit: profit.toFixed(2),
+                    isProfit: profit >= 0
+                });
+            }
+            
+            // Sort by time (newest first)
+            return activities.sort((a, b) => b.time.localeCompare(a.time));
+        }
+        
+        function renderActivity(activities, container) {
+            container.innerHTML = '';
+            
+            activities.forEach(activity => {
+                const item = document.createElement('div');
+                item.className = 'activity-item';
+                
+                item.innerHTML = `
+                    <span class="activity-time">${activity.time}</span>
+                    <span class="activity-action">${activity.action}</span>
+                    <span class="activity-profit ${activity.isProfit ? 'profit-up' : 'profit-down'}">
+                        ${activity.isProfit ? '+' : ''}${activity.profit}
+                    </span>
+                `;
+                
+                container.appendChild(item);
+            });
+        }
+        
+        // Initialize live trading demo
+        function initLiveTradingDemo() {
+            const candleContainer = document.querySelector('.chart-candles');
+            const activityContainer = document.querySelector('.trading-activity');
+            
+            // Generate initial data
+            const candles = generateRandomCandles(50);
+            const activities = generateRandomActivity(15);
+            
+            // Render initial data
+            renderCandles(candles, candleContainer);
+            renderActivity(activities, activityContainer);
+            
+            // Update periodically
+            setInterval(() => {
+                // Add new candle
+                const lastCandle = candles[candles.length - 1];
+                const newCandle = {
+                    open: lastCandle.close,
+                    close: lastCandle.close + (Math.random() - 0.5) * lastCandle.close * 0.02,
+                    high: 0,
+                    low: 0
+                };
+                
+                newCandle.high = Math.max(newCandle.open, newCandle.close) + Math.random() * newCandle.open * 0.01;
+                newCandle.low = Math.min(newCandle.open, newCandle.close) - Math.random() * newCandle.open * 0.01;
+                
+                candles.push(newCandle);
+                candles.shift();
+                renderCandles(candles, candleContainer);
+                
+                // Occasionally add new activity
+                if (Math.random() > 0.7) {
+                    const newActivities = generateRandomActivity(1);
+                    activities.unshift(newActivities[0]);
+                    
+                    if (activities.length > 15) {
+                        activities.pop();
+                    }
+                    
+                    renderActivity(activities, activityContainer);
+                }
+                
+                // Update portfolio value randomly
+                const portfolioValue = document.querySelector('.stat-card-value:first-child');
+                const currentValue = parseFloat(portfolioValue.textContent.replace(/[^0-9.]/g, ''));
+                const newValue = currentValue * (1 + (Math.random() - 0.5) * 0.01);
+                portfolioValue.textContent = `$${newValue.toFixed(2)}`;
+                
+                // Update P/L
+                const plElement = document.querySelectorAll('.stat-card-value')[1];
+                const currentPL = parseFloat(plElement.textContent);
+                const newPL = currentPL + (Math.random() - 0.5) * 0.5;
+                plElement.textContent = `${newPL >= 0 ? '+' : ''}${newPL.toFixed(1)}%`;
+                plElement.style.color = newPL >= 0 ? '#10b981' : '#ef4444';
+                
+            }, 2000);
+        }
+        
+        // Start the demo when the page loads
+        window.addEventListener('load', initLiveTradingDemo);
+    </script>
+</body>
+</html>
